@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { PrismaClient } from "@prisma/client";
-import AccessDenied from "../../../components/AccessDenied";
-import axios from "axios";
 import { useRouter } from "next/router";
+import AccessDenied from "../../../components/AccessDenied";
+import Loading from "../../../components/Loading";
+import axios from "axios";
 
 const prisma = new PrismaClient();
 
@@ -32,40 +33,43 @@ export default function NewRequirement({ project }) {
   };
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (status === "unauthenticated") {
     return <AccessDenied />;
   }
   return (
-    <div className="container mx-auto flex px-10 lg:px-40 py-10 -mb-32 items-center justify-center flex-col">
-      <div className=" bg-green-400 p-10 rounded">
-        <h3 className="text-3xl">Add New Requirement</h3>
-        <form onSubmit={(e) => onSub(e)}>
-          <div></div>
-          <div>
-            <div className="mt-4">
-              <textarea
-                className="mt-1 w-80  block  px-3 py-2 bg-white border border-gray-300 rounded-md"
-                name="value"
-                required
-                onChange={(e) => {
-                  setParams({ ...params, value: e.target.value });
-                }}
-              />
+    <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={(e) => onSub(e)}>
+            <div>
+              <h2 className="mb-5  text-2xl font-bold text-gray-900">
+                Add New Requirement
+              </h2>
+              <div class="mt-1">
+                <textarea
+                  rows="4"
+                  name="value"
+                  required
+                  onChange={(e) => {
+                    setParams({ ...params, value: e.target.value });
+                  }}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                ></textarea>
+              </div>
             </div>
-          </div>
-
-          <div className="mt-4">
-            <button
-              className="text-white px-2 p-1 bg-green-400 mt-4 rounded-lg text-xl bg-gray-900"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -1,21 +1,22 @@
 import axios from "axios";
 import React, { useState } from "react";
-import Button from "./Button";
 import Link from "next/link";
 import Modal from "./Modal";
 import { useRouter } from "next/router";
 import Loading from "./Loading";
+import Notification from "./Notification";
+
 
 function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
   const [estimation, setEstimation] = useState({});
   const [note, setNote] = useState({});
+  const [showNotification, setShowNotification] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
 
   const refreshData = () => {
-    setIsRefreshing(true);
     router.replace(router.asPath);
-    setIsRefreshing(false);
+    setIsRefreshing(true);
   };
 
   const deleteRequirement = async (id, status) => {
@@ -26,6 +27,8 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
 
       if (res.status === 200) {
         refreshData();
+        setShowNotification(true);
+        setIsRefreshing(false);
       }
     } else if (status === "inprogress") {
       //pop up a message here
@@ -36,7 +39,7 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
     {
       text: "Delete",
       func: deleteRequirement,
-      actionColor: "green",
+      actionColor: "red",
     },
   ];
 
@@ -46,6 +49,13 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
 
   return (
     <>
+      {showNotification ? (
+        <Notification
+          message={"Requirement has been deleted."}
+          setShow={setShowNotification}
+        />
+      ) : null}
+
       {reqs.map((req) => (
         <div key={req.id}>
           <div className="mb-5 p-4 rounded-xl text-white">
@@ -53,22 +63,34 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
               <div className="p-4 border  bg-gray-700   rounded-lg">
                 <div className="flex items-center justify-between">
                   <p className="text-2xl ">{req.value}</p>
-
-                  <Modal
-                    message="Are you sure you want to delete this requirement ?"
-                    actions={modalActions}
-                    req={req}
-                    disable={false}
-                  />
+                  {req.status === "start" ? (
+                    <Modal
+                      message="Are you sure you want to delete this requirement ?"
+                      headline="Delete Requirement"
+                      actions={modalActions}
+                      req={req}
+                      disable={false}
+                    />
+                  ) : (
+                    <Modal
+                      message="Are you sure you want to delete this requirement ?"
+                      headline="Delte Requirement"
+                      actions={modalActions}
+                      req={req}
+                      disable={true}
+                    />
+                  )}
                 </div>
                 {req.status === "completed" ? null : (
-                  <div className="flex justify-end">
-                    <Link href={""} passHref>
-                      <Button text={"edit"} ver="green" type={"submit"} />
-                    </Link>
-                  </div>
-                )}
 
+                  <div className="flex justify-end">
+                  <Link href={`/editRequirement/${req.id}`} passHref>
+                    <button className="h-10 px-5 mt-2 text-xl text-white transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline hover:bg-green-400">
+                      Edit requirement
+                    </button>
+                  </Link>
+                </div>
+                  )}
                 {req.estimation.length > 0 ? (
                   <p className="text-1xl mt-6 font-bold bg-green-200  p-2 rounded-lg text-gray-600 inline-block">
                     Date : {req.estimation[0].date}, Duration :{" "}
@@ -181,7 +203,7 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
                         type={"submit"}
                         className="text-white px-2 p-1 bg-green-400 mt-4 rounded-lg text-xl"
                       >
-                        submit
+                        Submit
                       </button>
                     </div>
                   </form>
@@ -193,7 +215,7 @@ function Requirement({ reqs, user, addNote, addEstimation, reqStatus }) {
                       className="text-white px-2 p-1 bg-green-400 mt-4 rounded-lg text-xl disabled:bg-gray-800 disabled:cursor-not-allowed"
                       type="submit"
                     >
-                      Mask as Completed
+                      Mark as Completed
                     </button>
                   </form>
                 )}

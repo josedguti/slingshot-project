@@ -19,7 +19,6 @@ function ChooseRole() {
     if (!res.ok) {
       console.log(res, "this is sent");
     }
-    //how to route back to specific project?
     router.back();
   };
 
@@ -31,36 +30,60 @@ function ChooseRole() {
     return <AccessDenied />;
   }
   return (
-    <div className="container mx-auto flex px-10 lg:px-40 py-10 -mb-32 items-center justify-center flex-col ">
-      <form onSubmit={(e) => handleUserUpdate(e)}>
-        <div className=" bg-green-400 p-10 rounded">
-          <h2 className="text-4xl bold">Choose your role.</h2>
-          <div className="mt-4">
-            <label className="mr-2">Client</label>
-            <input
-              type="radio"
-              id="role1"
-              name="role"
-              value="client"
-              required
-              onChange={(e) => setRole(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="mr-2">Maintainer</label>
-            <input
-              type="radio"
-              id="role2"
-              name="role"
-              value="maintainer"
-              onChange={(e) => setRole(e.target.value)}
-            />
-          </div>
-          <button className="text-1xl bg-gray-700 p-1 px-2 rounded-lg text-white  hover:bg-gray-600 mt-4">
-            Submit
-          </button>
+    <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form onSubmit={(e) => handleUserUpdate(e)}>
+            <h2 className="text-4xl bold">Choose your role.</h2>
+            <fieldset className="mt-3">
+              <legend className="sr-only">Notification method</legend>
+              <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10 m-3">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="role1"
+                    name="role"
+                    value="client"
+                    required
+                    onChange={(e) => setRole(e.target.value)}
+                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  />
+                  <label
+                    htmlFor="role1"
+                    className="ml-3 block text-sm font-medium text-gray-700"
+                  >
+                    Client
+                  </label>
+                </div>
+
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="role2"
+                    name="role"
+                    value="maintainer"
+                    onChange={(e) => setRole(e.target.value)}
+                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                  />
+                  <label
+                    htmlFor="role1"
+                    className="ml-3 block text-sm font-medium text-gray-700"
+                  >
+                    Maintainer
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Submit
+            </button>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
