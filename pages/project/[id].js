@@ -4,7 +4,7 @@ import Loading from "../../components/Loading";
 import { PrismaClient } from "@prisma/client";
 import { useSession, getSession } from "next-auth/react";
 import { EmojiSadIcon } from "@heroicons/react/solid";
-
+import { useRouter } from "next/router";
 import Link from "next/link";
 import slingShot from "../../public/Slingshot.svg";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import RequirementDetail from "../../components/RequirementDetail";
 
 function Project({ project, reqs, user }) {
   const { status } = useSession();
+  const router = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [reqDetail, setReqDetail] = useState(null);
 
