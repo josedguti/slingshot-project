@@ -86,7 +86,7 @@ export default function index() {
 
                 <div>
                   <p className="text-center text-lg font-medium text-gray-700 p-5 text-black">
-                    Sign In With Github
+                    Sign In
                   </p>
                   <button
                     onClick={() => signIn()}
