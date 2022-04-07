@@ -2,8 +2,6 @@ import React from "react";
 import { PrismaClient } from "@prisma/client";
 import { ArrowsExpandIcon } from "@heroicons/react/solid";
 import Link from "next/link";
-import Loading from "../components/Loading";
-import AccessDenied from "../components/AccessDenied";
 
 export async function getServerSideProps() {
   const prisma = new PrismaClient();
@@ -15,13 +13,6 @@ export async function getServerSideProps() {
   };
 }
 function Projects({ projects }) {
-  const { status } = useSession();
-  if (status === "loading") {
-    return <Loading />;
-  }
-  if (status === "unauthenticated") {
-    return <AccessDenied />;
-  }
   return (
     <div className="pb-40">
       <div className="text-center text-3xl font-extrabold text-gray-900 mb-6">
