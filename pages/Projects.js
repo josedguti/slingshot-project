@@ -2,49 +2,17 @@ import React from "react";
 import { PrismaClient } from "@prisma/client";
 import { ArrowsExpandIcon } from "@heroicons/react/solid";
 import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
-import Loading from '../components/Loading';
-import AccessDenied from '../components/AccessDenied';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const prisma = new PrismaClient();
-
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      props: {
-        session: null,
-      },
-    };
-  }
-
-  const projects = await prisma.project.findMany({
-    where: {
-      user: {
-        email: session.user.email,
-      },
-    },
-  });
-
+  const projects = await prisma.project.findMany();
   return {
     props: {
       projects,
-      session,
     },
   };
 }
-
 function Projects({ projects }) {
-  const { data: session, status } = useSession();
-  if (status === "loading") {
-    return <Loading />;
-  }
-
-  if (status === "unauthenticated") {
-    return <AccessDenied />;
-  }
-
   return (
     <div className="pb-40">
       <div className="text-center text-3xl font-extrabold text-gray-900 mb-6">
