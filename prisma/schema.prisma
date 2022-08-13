@@ -47,6 +47,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   role          String?
+  projects      Project[]
 }
 
 model VerificationToken {
@@ -64,6 +65,8 @@ model Project {
   name         String?
   description  String?
   requirements Requirement[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
 }
 
 model Requirement {
