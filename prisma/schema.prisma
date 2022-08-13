@@ -1,12 +1,12 @@
-datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
-generator client {
-  provider = "prisma-client-js"
-
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Account {
@@ -64,8 +64,6 @@ model Project {
   name         String?
   description  String?
   requirements Requirement[]
-
-
 }
 
 model Requirement {
