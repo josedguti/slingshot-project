@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../lib/prisma";
 import { useRouter } from "next/router";
 import AccessDenied from "../../../components/AccessDenied";
 import Loading from "../../../components/Loading";
 import axios from "axios";
 
-const prisma = new PrismaClient();
 
 export default function NewRequirement({ project }) {
   const { status } = useSession();
