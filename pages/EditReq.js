@@ -3,7 +3,9 @@ import Button from "../components/Button";
 import Link from "next/link";
 import { useSession, getSession } from "next-auth/react";
 import Loading from "../components/Loading";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../lib/prisma";
+
+
 function EditReq({ reqs, user }) {
   const { status } = useSession();
   console.log(status);

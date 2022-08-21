@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSession, getSession } from "next-auth/react";
 import Loading from "../../components/Loading";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from '../../lib/prisma';
 import { stringify } from "postcss";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -88,7 +88,6 @@ function EditReq({ requirement }) {
 export default EditReq;
 
 export async function getServerSideProps({ params, req }) {
-  const prisma = new PrismaClient();
   const requirement = await prisma.requirement.findUnique({
     where: {
       id: params.id,

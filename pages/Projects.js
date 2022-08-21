@@ -2,9 +2,10 @@ import React from "react";
 import { PrismaClient } from "@prisma/client";
 import { ArrowsExpandIcon } from "@heroicons/react/solid";
 import Link from "next/link";
+import { prisma } from '../lib/prisma';
 
 export async function getServerSideProps() {
-  const prisma = new PrismaClient();
+
   const projects = await prisma.project.findMany();
   return {
     props: {

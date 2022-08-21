@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AccessDenied from "../../components/AccessDenied";
 import Loading from "../../components/Loading";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from '../../lib/prisma';
 import { useSession, getSession } from "next-auth/react";
 import { EmojiSadIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
@@ -128,7 +128,6 @@ export async function getServerSideProps({ params, req }) {
   const session = await getSession({ req });
 
   let user;
-  const prisma = new PrismaClient();
   if (session !== null) {
     user = await prisma.user.findUnique({
       where: {
